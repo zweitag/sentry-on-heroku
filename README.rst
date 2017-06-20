@@ -52,15 +52,19 @@ Follow the steps below to get Sentry up and running on Heroku:
 
         heroku config:set SENTRY_URL_PREFIX=https://sentry-example.herokuapp.com
 
-6. Deploy Sentry to Heroku::
+6. Set the server's admin email::
+
+        heroku config:set SENTRY_ADMIN_EMAIL=someone@example.invalid
+
+7. Deploy Sentry to Heroku::
 
         git push heroku master
 
-7. Sentry's database migrations are automatically run as part of the Heroku `release phase`_ ::
+8. Sentry's database migrations are automatically run as part of the Heroku `release phase`_ ::
 
         heroku run "sentry --config=sentry.conf.py upgrade --noinput"
 
-8. Create a user account for yourself::
+9. Create a user account for yourself::
 
         heroku run "sentry --config=sentry.conf.py createuser"
 
@@ -73,11 +77,13 @@ That's it!
 Email notifications
 -------------------
 
-Follow the steps below, if you want to enable Sentry's email notifications:
+For Sentry to send email notifications via Mailjet::
 
-1. Add SendGrid add-on to your Heroku application::
+1. Configure your environment::
 
-        heroku addons:create sendgrid
+        heroku config:set MAILJET_HOST=in-vx.mailjet.com
+        heroku config:set MAILJET_API_KEY=APIKEY
+        heroku config:set MAILJET_PRIVATE_KEY=PRIVATEKEY
 
 2. Set the reply-to email address for outgoing mail::
 

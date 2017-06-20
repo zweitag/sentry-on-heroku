@@ -54,6 +54,8 @@ SENTRY_OPTIONS['redis.clusters'] = {
     }
 }
 
+SENTRY_DIGESTS = 'sentry.digests.backends.redis.RedisBackend'
+
 #########
 # Cache #
 #########
@@ -146,7 +148,7 @@ AWS_DEFAULT_ACL = 'private'
 SENTRY_OPTIONS['system.url-prefix'] = os.environ['SENTRY_URL_PREFIX']
 
 SENTRY_WEB_HOST = '0.0.0.0'
-SENTRY_WEB_PORT = int(os.environ['PORT'])
+SENTRY_WEB_PORT = int(os.environ.get('PORT', '3000'))
 SENTRY_WEB_OPTIONS = {
     'secure_scheme_headers': {'X-FORWARDED-PROTO': 'https'},
     'worker_class': 'gevent',
@@ -162,10 +164,10 @@ SENTRY_WEB_OPTIONS = {
 
 SENTRY_OPTIONS['mail.backend'] = 'django.core.mail.backends.smtp.EmailBackend'
 
-if 'SENDGRID_USERNAME' in os.environ:
-    SENTRY_OPTIONS['mail.host'] = 'smtp.sendgrid.net'
-    SENTRY_OPTIONS['mail.username'] = os.environ['SENDGRID_USERNAME']
-    SENTRY_OPTIONS['mail.password'] = os.environ['SENDGRID_PASSWORD']
+if 'MAILJET_HOST' in os.environ:
+    SENTRY_OPTIONS['mail.host'] = os.environ['MAILJET_HOST']
+    SENTRY_OPTIONS['mail.username'] = os.environ['MAILJET_API_KEY']
+    SENTRY_OPTIONS['mail.password'] = os.environ['MAILJET_PRIVATE_KEY']
 SENTRY_OPTIONS['mail.port'] = 587
 SENTRY_OPTIONS['mail.use-tls'] = True
 
