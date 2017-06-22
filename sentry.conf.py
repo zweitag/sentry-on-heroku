@@ -132,8 +132,8 @@ SENTRY_TSDB = 'sentry.tsdb.redis.RedisTSDB'
 # Any Django storage backend is compatible with Sentry. For more solutions see
 # the django-storages package: https://django-storages.readthedocs.org/en/latest/
 
-SENTRY_FILESTORE = 'storages.backends.s3boto.S3BotoStorage'
-SENTRY_FILESTORE_OPTIONS = {}
+SENTRY_OPTIONS['filestore.backend'] = 'storages.backends.s3boto.S3BotoStorage'
+SENTRY_OPTIONS['filestore.options'] = {}
 
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
