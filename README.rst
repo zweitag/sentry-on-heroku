@@ -88,3 +88,67 @@ For Sentry to send email notifications via Mailjet::
 2. Set the reply-to email address for outgoing mail::
 
         heroku config:set SERVER_EMAIL=sentry@example.com
+
+Upgrading
+---------
+
+1. Update Sentry egg version in `requirements.in`
+
+2. Run `./update-dependencies`
+
+    You *may* need to fix unresolvable dependencies manually if `pip` complains
+    about them. This can be done by adding a line to `requirements.in` like
+    this: `redis-py-cluster==1.3.4`.
+
+3. Run `pip install -r requirements.txt` to install Sentry locally
+
+    This can be done in a Docker container configured like this:
+
+    `docker run -it --rm -v $(pwd):/usr/src/app --workdir /usr/src/app python:2.7-stretch bash`
+
+4. Run `sentry init .` to create a new set of configuration files
+
+5. Adapt `sentry.conf.py` to the existing one (e.g. to read configuration from the environment)
+
+6. Commit to master
+
+6. Create a staging instance:
+
+        dokku apps:create sentry-staging
+        dokku domains:set sentry-staging domain.invalid
+        dokku config:set DOKKU_LETSENCRYPT_EMAIL= SECRET_KEY= SENTRY_URL_PREFIX=
+        dokku postgres:clone sentry sentry-staging
+        dokku postgres:link sentry-staging sentry-staging
+        dokku redis:create sentry-staging
+        dokku redis:link sentry-staging
+        dokku letsencrypt sentry-staging
+
+7. Deploy staging instance:
+
+        git remote add staging ...
+        git push staging master
+
+8. Run migrations on staging:
+
+        dokku run sentry-staging bash
+        sentry --config=sentry.conf.py upgrade
+
+    In the past, we had to fix some migrations manually because of exceptions
+    like this:
+
+        > sentry:0365_auto__del_index_eventtag_project_id_key_id_value_id
+        FATAL ERROR - The following SQL query failed: DROP INDEX CONCURRENTLY sentry_eventtag_project_id_2ccbd941681a83f5
+        The error was: index "sentry_eventtag_project_id_2ccbd941681a83f5" does not exist
+
+    First, figure out what's wrong by looking at the migration code located in
+    `/app/.heroku/python/lib/python2.7/site-packages/sentry/south_migrations`.
+
+    Next, fix the database schema in a `psql` console.
+
+    Last, modify the migration code (e.g. remove the failing statements).
+
+    Then run migrations again.
+
+9. Check if all features on staging work correctly
+
+10. Repeat steps 7-9 for production.
