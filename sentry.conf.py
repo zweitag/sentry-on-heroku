@@ -134,8 +134,14 @@ SENTRY_WEB_OPTIONS = {
 SENTRY_OPTIONS['system.secret-key'] = os.environ['SECRET_KEY']
 SENTRY_OPTIONS['system.url-prefix'] = os.environ['SENTRY_URL_PREFIX']
 SENTRY_OPTIONS['system.admin-email'] = os.environ.get('SENTRY_ADMIN_EMAIL', '')
-SENTRY_OPTIONS['filestore.backend'] = 'storages.backends.s3boto.S3BotoStorage'
-SENTRY_OPTIONS['filestore.options'] = {}
+SENTRY_OPTIONS['filestore.backend'] = 's3'
+SENTRY_OPTIONS['filestore.options'] = {
+    'access_key': os.environ.get('AWS_ACCESS_KEY_ID'),
+    'secret_key': os.environ.get('AWS_SECRET_ACCESS_KEY'),
+    'bucket_name': os.environ.get('AWS_STORAGE_BUCKET_NAME'),
+    'signature_version': 's3v4'
+}
+AWS_DEFAULT_ACL = 'private'
 
 redis_url = urlparse(os.environ['REDIS_URL'])
 SENTRY_OPTIONS['redis.clusters'] = {
@@ -165,11 +171,6 @@ SENTRY_OPTIONS['mail.from'] = os.environ.get('SERVER_EMAIL', 'root@localhost')
 # If you're using mailgun for inbound mail, set your API key and configure a
 # route to forward to /api/hooks/mailgun/inbound/
 SENTRY_OPTIONS['mail.mailgun-api-key'] = os.environ.get('MAILGUN_API_KEY', '')
-
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
-AWS_DEFAULT_ACL = 'private'
 
 ###################
 # Sentry Features #
