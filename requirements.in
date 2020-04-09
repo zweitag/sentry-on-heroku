@@ -4,7 +4,9 @@ django-bcrypt
 django-secure
 django-storages
 ndg-httpsclient  # required by requests
-psycopg2
+# https://github.com/getsentry/sentry/blob/9.0.0/requirements-base.txt#L36
+# and https://github.com/psycopg/psycopg2-wheels/issues/2
+psycopg2>=2.7.3.2,<2.8.0
 dj-database-url
 redis-py-cluster==1.3.4
 # 2.4.2 is needed to resolve "conflicting types for ‘BIO_callback_ctrl’" with herokuish-18

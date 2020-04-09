@@ -64,7 +64,7 @@ petname==2.0              # via sentry
 pillow==3.2.0             # via sentry
 pluggy==0.6.0             # via pytest
 progressbar2==3.10.1      # via sentry
-psycopg2==2.7.1           # via -r requirements.in, sentry
+psycopg2==2.7.7           # via -r requirements.in, sentry
 py-bcrypt==0.4            # via django-bcrypt
 py==1.6.0                 # via pytest
 pycparser==2.16           # via cffi
