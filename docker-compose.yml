@@ -1,0 +1,7 @@
+version: '3'
+services:
+  app:
+    image: python:2.7.15
+    volumes:
+      - .:/usr/src/app
+    working_dir: /usr/src/app
