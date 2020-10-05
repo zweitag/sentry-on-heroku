@@ -7,46 +7,10 @@
     "logging",
     "error"
   ],
-  "addons": [
-    "heroku-postgresql:hobby-dev",
-    "heroku-redis:premium-0",
-    "sendgrid:starter"
-  ],
-  "env": {
-    "SECRET_KEY": {
-      "description": "A secret key for a particular Django installation. This is used to provide cryptographic signing, and should be set to a unique, unpredictable value.",
-      "generator": "secret"
-    },
-    "SENTRY_URL_PREFIX": {
-      "description": "Your applications URL, no trailing slash",
-      "value": "https://YOURAPPNAME.herokuapp.com"
-    },
-    "SERVER_EMAIL": {
-      "description": "Reply to address for outgoing email",
-      "value": "root@localhost"
-    },
-    "SENTRY_ADMIN_EMAIL": {
-      "description": "The administrative email for this installation. Note: This will be reported back to getsentry.com as the point of contact. See the beacon documentation for more information.",
-      "value": "",
-      "required": false
-    },
-    "AWS_ACCESS_KEY_ID": {
-      "description": "Your Amazon Web Services access key",
-      "value": "",
-      "required": false
-    },
-    "AWS_SECRET_ACCESS_KEY": {
-      "description": "Your Amazon Web Services secret access key",
-      "value": "",
-      "required": false
-    },
-    "AWS_STORAGE_BUCKET_NAME": {
-      "description": "Your Amazon Web Services storage bucket name",
-      "value": "",
-      "required": false
-    }
-  },
+  "env": {},
   "scripts": {
-    "postdeploy": "sentry --config=sentry.conf.py upgrade --noinput"
+    "dokku": {
+      "postdeploy": "sentry --config=sentry.conf.py upgrade --noinput"
+    }
   }
 }

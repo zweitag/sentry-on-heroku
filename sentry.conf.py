@@ -47,6 +47,21 @@ DEBUG = False
 # }
 
 # A primary cache is required for things such as processing events
+
+redis_url = urlparse(os.environ['REDIS_URL'])
+SENTRY_OPTIONS['redis.clusters'] = {
+    'default': {
+        'hosts': {
+            0: {
+                'host': redis_url.hostname,
+                'port': redis_url.port,
+                'password': redis_url.password,
+                'db': 0,
+            }
+        }
+    }
+}
+
 SENTRY_CACHE = 'sentry.cache.redis.RedisCache'
 
 #########
@@ -105,6 +120,22 @@ SENTRY_TSDB = 'sentry.tsdb.redis.RedisTSDB'
 
 SENTRY_DIGESTS = 'sentry.digests.backends.redis.RedisBackend'
 
+################
+# File storage #
+################
+
+# Uploaded media uses these `filestore` settings. The available
+# backends are either `filesystem` or `s3`.
+
+SENTRY_OPTIONS['filestore.backend'] = 's3'
+SENTRY_OPTIONS['filestore.options'] = {
+    'access_key': os.environ.get('AWS_ACCESS_KEY_ID'),
+    'secret_key': os.environ.get('AWS_SECRET_ACCESS_KEY'),
+    'bucket_name': os.environ.get('AWS_STORAGE_BUCKET_NAME'),
+    'signature_version': 's3v4'
+}
+AWS_DEFAULT_ACL = 'private'
+
 ##############
 # Web Server #
 ##############
@@ -128,34 +159,9 @@ SENTRY_WEB_OPTIONS = {
     # 'protocol': 'uwsgi',  # Enable uwsgi protocol instead of http
 }
 
-##################
-# Sentry Options #
-##################
-SENTRY_OPTIONS['system.secret-key'] = os.environ['SECRET_KEY']
-SENTRY_OPTIONS['system.url-prefix'] = os.environ['SENTRY_URL_PREFIX']
-SENTRY_OPTIONS['system.admin-email'] = os.environ.get('SENTRY_ADMIN_EMAIL', '')
-SENTRY_OPTIONS['filestore.backend'] = 's3'
-SENTRY_OPTIONS['filestore.options'] = {
-    'access_key': os.environ.get('AWS_ACCESS_KEY_ID'),
-    'secret_key': os.environ.get('AWS_SECRET_ACCESS_KEY'),
-    'bucket_name': os.environ.get('AWS_STORAGE_BUCKET_NAME'),
-    'signature_version': 's3v4'
-}
-AWS_DEFAULT_ACL = 'private'
-
-redis_url = urlparse(os.environ['REDIS_URL'])
-SENTRY_OPTIONS['redis.clusters'] = {
-    'default': {
-        'hosts': {
-            0: {
-                'host': redis_url.hostname,
-                'port': redis_url.port,
-                'password': redis_url.password,
-                'db': 0,
-            }
-        }
-    }
-}
+###############
+# Mail Server #
+###############
 
 SENTRY_OPTIONS['mail.backend'] = 'django.core.mail.backends.smtp.EmailBackend'
 if 'MAILJET_HOST' in os.environ:
@@ -171,6 +177,13 @@ SENTRY_OPTIONS['mail.from'] = os.environ.get('SERVER_EMAIL', 'root@localhost')
 # If you're using mailgun for inbound mail, set your API key and configure a
 # route to forward to /api/hooks/mailgun/inbound/
 SENTRY_OPTIONS['mail.mailgun-api-key'] = os.environ.get('MAILGUN_API_KEY', '')
+
+##################
+# Sentry Options #
+##################
+SENTRY_OPTIONS['system.secret-key'] = os.environ['SECRET_KEY']
+SENTRY_OPTIONS['system.url-prefix'] = os.environ['SENTRY_URL_PREFIX']
+SENTRY_OPTIONS['system.admin-email'] = os.environ.get('SENTRY_ADMIN_EMAIL', '')
 
 ###################
 # Sentry Features #
