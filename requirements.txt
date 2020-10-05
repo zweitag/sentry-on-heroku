@@ -91,7 +91,7 @@ s3transfer==0.1.10        # via boto3
 selenium==3.11.0          # via sentry
 semaphore==0.1.3          # via sentry
 sentry-github==0.1.2      # via -r requirements.in
-sentry==9.0.0             # via -r requirements.in, sentry-auth-google, sentry-github
+sentry==9.1.0             # via -r requirements.in, sentry-auth-google, sentry-github
 setproctitle==1.1.10      # via sentry
 simplejson==3.8.2         # via sentry
 six==1.10.0               # via cryptography, mock, more-itertools, parsimonious, pyopenssl, pytest, python-dateutil, python-memcached, python-utils, qrcode, sentry, structlog

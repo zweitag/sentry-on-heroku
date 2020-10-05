@@ -13,6 +13,6 @@ redis-py-cluster==1.3.4
 # see https://github.com/apache/incubator-superset/issues/4870#issuecomment-444189653
 cryptography==2.4.2
 uwsgi==2.0.17.1
-sentry==9.0.0
--e git://github.com/getsentry/sentry-auth-google.git@578432dfeb7b16a681b4aeddbefd3cd2dbf5759f#egg=sentry-auth-google
+sentry==9.1.0
+sentry-auth-google
 sentry-github
