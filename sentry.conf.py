@@ -151,7 +151,7 @@ AWS_DEFAULT_ACL = 'private'
 # FORCE_SCRIPT_NAME = '/sentry'
 
 SENTRY_WEB_HOST = '0.0.0.0'
-SENTRY_WEB_PORT = int(os.environ.get('PORT', '3000'))
+SENTRY_WEB_PORT = int(os.environ.get('PORT', '9000'))
 SENTRY_WEB_OPTIONS = {
     'secure_scheme_headers': {'X-FORWARDED-PROTO': 'https'},
     'worker_class': 'gevent',
