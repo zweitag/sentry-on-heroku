@@ -1,6 +1,9 @@
 language: python
 python: "2.7"
 sudo: false
+before_install:
+  # required for xmlsec python package
+  - sudo apt-get -y install libxmlsec1-dev
 install:
   - pip install --upgrade pip
   - pip install -r requirements.txt
